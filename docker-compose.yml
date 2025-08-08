@@ -1,0 +1,29 @@
+services:
+  backend:
+    build:
+      context: ./
+    ports: 
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/task_manager
+    depends_on:
+      - db
+    volumes:
+      - /app/node_modules
+
+  db:
+    image: postgres:17-alpine
+    container_name: postgres_container
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: task_manager
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
